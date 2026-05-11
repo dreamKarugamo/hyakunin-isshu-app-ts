@@ -19,7 +19,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ query, onQueryChange, on
                 value={query}
                 onChange={(e) => onQueryChange(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSearch()}
-                placeholder="番号、歌、著者で探す..."
+                placeholder="番号、歌、作者で探す..."
             />
             <button type="button" className="search-btn" onClick={onSearch}>
                 検索

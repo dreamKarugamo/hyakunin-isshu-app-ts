@@ -75,6 +75,8 @@ const App: React.FC = () => {
         clearAllTimers();
         stopAudio();
         setCountdown(null);
+        setCurrentPoem(null);
+        setShowAuthor(false);
     }, [clearAllTimers, stopAudio]);
 
     useEffect(() => {
@@ -147,60 +149,73 @@ const App: React.FC = () => {
     );
 
     const startRoulette = useCallback(
-        (targetPoem?: Poem) => {
-            stopAll();
-            setState("roulette");
-            setDisplayedPhrases([]);
-            setShowAuthor(false);
-
-            let ticks = 0;
-            const timerId = window.setInterval(() => {
-                setRouletteNum(String(Math.floor(Math.random() * 100) + 1));
-                ticks++;
-
-                if (ticks > ROULETTE_TICKS) {
-                    window.clearInterval(timerId);
-
-                    if ((stateRef.current as AppState) !== "roulette") return;
-
-                    const getNextPoem = () => {
-                        if (targetPoem) return targetPoem;
-
-                        if (remainingIdsRef.current.length === 0) {
-                            stopAllRef.current();
-                            return null;
-                        }
-
-                        const pool = remainingIdsRef.current;
-                        const idx = Math.floor(Math.random() * pool.length);
-                        const selectedId = pool[idx];
-
-                        remainingIdsRef.current = pool.filter(
-                            (id) => id !== selectedId,
-                        );
-
-                        return hyakuninIsshuData.find(
-                            (p) => Number(p.id) === selectedId,
-                        )!;
-                    };
-
-                    const chosenPoem = getNextPoem();
-                    if (!chosenPoem) return;
-                    setRouletteNum(String(chosenPoem.id));
-
-                    const onComplete = isAutoModeRef.current
-                        ? () => {
-                              startRouletteRef.current();
-                          }
-                        : undefined;
-
-                    startCountdown(chosenPoem, onComplete);
-                }
-            }, ROULETTE_INTERVAL_MS);
-            addInterval(timerId);
-        },
-        [addInterval, stopAll, startCountdown],
-    );
+            (targetPoem?: Poem) => {
+                stopAll();
+                setState("roulette");
+                setDisplayedPhrases([]);
+                setShowAuthor(false);
+    
+                let ticks = 0;
+                const timerId = window.setInterval(() => {
+                    setRouletteNum(String(Math.floor(Math.random() * 100) + 1));
+                    ticks++;
+    
+                    if (ticks > ROULETTE_TICKS) {
+                        window.clearInterval(timerId);
+    
+                        if ((stateRef.current as AppState) !== "roulette") return;
+    
+                        const getNextPoem = () => {
+                            if (targetPoem) return targetPoem;
+    
+                            if (remainingIdsRef.current.length === 0) {
+                                window.alert("全百首の読み上げが終了しました！履歴をリセットして初期画面に戻ります。");
+                                
+                                clearHistory();
+                                
+                                stopAll(); 
+                                
+                                setCurrentPoem(null);
+                                setRouletteNum("？");
+                                setIsAutoMode(false);
+                                
+                                remainingIdsRef.current = hyakuninIsshuData.map((p) => Number(p.id));
+                                
+                                return null;
+                            }
+    
+                            const pool = remainingIdsRef.current;
+                            const idx = Math.floor(Math.random() * pool.length);
+                            const selectedId = pool[idx];
+    
+                            remainingIdsRef.current = pool.filter(
+                                (id) => id !== selectedId,
+                            );
+    
+                            return hyakuninIsshuData.find(
+                                (p) => Number(p.id) === selectedId,
+                            )!;
+                        };
+    
+                        const chosenPoem = getNextPoem();
+                        
+                        if (!chosenPoem) return;
+    
+                        setRouletteNum(String(chosenPoem.id));
+    
+                        const onComplete = isAutoModeRef.current
+                            ? () => {
+                                  startRouletteRef.current();
+                              }
+                            : undefined;
+    
+                        startCountdown(chosenPoem, onComplete);
+                    }
+                }, ROULETTE_INTERVAL_MS);
+                addInterval(timerId);
+            },
+            [addInterval, stopAll, startCountdown, clearHistory],
+        );
 
     useEffect(() => {
         startRouletteRef.current = startRoulette;
@@ -216,6 +231,7 @@ const App: React.FC = () => {
 
             // 全首読み終えて止まっていた場合はリセットして再開
             if (remainingIdsRef.current.length === 0) {
+                window.alert("全首読みが終了しました。再度スタートします。");
                 remainingIdsRef.current = hyakuninIsshuData.map((p) => Number(p.id));
             }
 
@@ -252,7 +268,7 @@ const App: React.FC = () => {
 
             <header>
                 <h1>
-                    <span className="icon">🐦‍⬛</span> 百人一首を覚えよう！
+                    <span className="icon">🐦‍⬛</span>百人一首を覚えよう
                     <span className="icon">🦃</span>
                 </h1>
             </header>
@@ -287,7 +303,9 @@ const App: React.FC = () => {
                         currentPoem={currentPoem}
                     />
                 </div>
-                <TranslationArea poem={currentPoem} visible={showAuthor} />
+                {currentPoem && (
+                    <TranslationArea poem={currentPoem} visible={showAuthor} />
+                )}
             </main>
 
             <div className="controls">
