@@ -1,0 +1,11 @@
+# .gitignoreファイルを新規作成し、以下の内容を書き込む
+cat << EOF > .gitignore
+node_modules/
+dist/
+.local/
+.ssh/
+.DS_Store
+*.local
+EOF.ssh/
+.local/
+node_modules/
