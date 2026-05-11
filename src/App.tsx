@@ -33,6 +33,7 @@ const App: React.FC = () => {
     const [showAuthor, setShowAuthor] = useState(false);
     const [rouletteNum, setRouletteNum] = useState("？");
     const [countdown, setCountdown] = useState<number | null>(null);
+    const [bgId, setBgId] = useState<string>("default");
 
     const { history, addToHistory, clearHistory } = useHistory();
     const { addTimeout, addInterval, clearAll: clearAllTimers } = useTimers();
@@ -54,10 +55,8 @@ const App: React.FC = () => {
     }, [isAutoMode]);
 
     const bgUrl = useMemo(() => {
-        return currentPoem
-            ? `/images/${currentPoem.id}.JPG`
-            : `/images/default.JPG`;
-    }, [currentPoem]);
+        return `/images/${bgId}.JPG`;
+        }, [bgId]);
 
     const delay = useCallback(
         (ms: number) =>
@@ -75,7 +74,6 @@ const App: React.FC = () => {
         clearAllTimers();
         stopAudio();
         setCountdown(null);
-        setCurrentPoem(null);
         setShowAuthor(false);
     }, [clearAllTimers, stopAudio]);
 
@@ -87,6 +85,7 @@ const App: React.FC = () => {
         async (poem: Poem, onComplete?: () => void) => {
             setState("playing");
             setCurrentPoem(poem);
+            setBgId(poem.id.toString());
             addToHistory(poem);
             setRouletteNum("");
             setDisplayedPhrases([]);
@@ -304,7 +303,9 @@ const App: React.FC = () => {
                     />
                 </div>
                 {currentPoem && (
-                    <TranslationArea poem={currentPoem} visible={showAuthor} />
+                    <TranslationArea
+                        poem={currentPoem}
+                        visible={state === "playing" && showAuthor} />
                 )}
             </main>
 
