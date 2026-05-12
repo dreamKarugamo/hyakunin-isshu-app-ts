@@ -1017,7 +1017,7 @@ export const hyakuninIsshuData: Poem[] = [
     },
     {
         id: 78,
-        text: "淡路島 かよふ千鳥の 鳴く声に いく夜ねざめぬ 須磨の関守",
+        text: "淡路島 かよふ千鳥の 鳴く声に 幾夜寝覚めぬ 須磨の関守",
         historicalKana:
             "あはぢしま かよふちどりの なくこゑに いくよねざめぬ すまのせきもり",
         modernKana:

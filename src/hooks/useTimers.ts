@@ -1,6 +1,9 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from 'react';
 
-type TimerEntry = { id: number; type: "timeout" | "interval" };
+type TimerEntry = {
+    id: number;
+    type: "timeout" | "interval"
+}
 
 export function useTimers() {
     const timersRef = useRef<TimerEntry[]>([]);
@@ -15,11 +18,14 @@ export function useTimers() {
 
     const clearAll = useCallback(() => {
         timersRef.current.forEach(({ id, type }) => {
-            if (type === "timeout") window.clearTimeout(id);
-            else window.clearInterval(id);
+            if (type === "timeout") {
+                window.clearTimeout(id);
+            } else {
+                window.clearInterval(id);
+            }
         });
         timersRef.current = [];
     }, []);
 
-    return { addTimeout, addInterval, clearAll };
+    return { addTimer: addTimeout, addInterval, clearAll };
 }

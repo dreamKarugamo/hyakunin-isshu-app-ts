@@ -1,32 +1,28 @@
 import { useState, useCallback } from "react";
 import type { Poem } from "../types/types";
+import { SETTINGS } from "../constants";
 
-const HISTORY_KEY = "isshuHistory";
-const HISTORY_MAX = 101;
-
-// unknownとして型ガード
 function isPoem(obj: unknown): obj is Poem {
     if (typeof obj !== "object" || obj === null) return false;
     const o = obj as Record<string, unknown>;
     return (
         typeof o.id === "number" &&
         typeof o.text === "string" &&
-        typeof o.author === "string" &&
-        typeof o.translation === "string" &&
         typeof o.historicalKana === "string" &&
         typeof o.modernKana === "string" &&
-        typeof o.reading === "string"
+        typeof o.reading === "string" &&
+        typeof o.author === "string" &&
+        typeof o.translation === "string"
     );
 }
 
 export function useHistory() {
     const [history, setHistory] = useState<Poem[]>(() => {
         try {
-            const saved = localStorage.getItem(HISTORY_KEY);
+            const saved = localStorage.getItem(SETTINGS.HISTORY.KEY);
             if (!saved) return [];
             const parsed: unknown = JSON.parse(saved);
             
-            // 配列かつ各要素が Poem の形か確認
             if (Array.isArray(parsed)) {
                 return parsed.filter(isPoem);
             }
@@ -39,16 +35,16 @@ export function useHistory() {
     const addToHistory = useCallback((poem: Poem) => {
         setHistory((prev) => {
             const next = [...prev.filter((p) => p.id !== poem.id), poem].slice(
-                -HISTORY_MAX,
+                -SETTINGS.HISTORY.MAX,
             );
-            localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+            localStorage.setItem(SETTINGS.HISTORY.KEY, JSON.stringify(next));
             return next;
         });
     }, []);
 
     const clearHistory = useCallback(() => {
         setHistory([]);
-        localStorage.removeItem(HISTORY_KEY);
+        localStorage.removeItem(SETTINGS.HISTORY.KEY);
     }, []);
 
     return { history, addToHistory, clearHistory };

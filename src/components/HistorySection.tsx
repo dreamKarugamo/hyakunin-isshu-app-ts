@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import type { Poem } from "../types/types";
-
-const HISTORY_DISPLAY = 5;
-const HYAKUNI_NISSHU_LENGTH = 101;
+import { SETTINGS } from "../constants";
 
 interface HistorySectionProps {
     history: Poem[];
@@ -39,7 +37,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                 onClick={() => setIsOpen((v) => !v)}
             >
                 <span className="history-toggle-count">
-                    {history.length} / {HYAKUNI_NISSHU_LENGTH}
+                    {history.length} / {SETTINGS.POEM.HYAKUNIN_ISSHU_LENGTH}
                 </span>
                 <span className="history-toggle-label">最近読んだ五首</span>
                 <span className="history-toggle-arrow">
@@ -71,7 +69,10 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                                 </button>
                             </div>
                         ) : (
-                            <span onClick={handleClearClick} className="reset-char">
+                            <span
+                                onClick={handleClearClick}
+                                className="reset-char"
+                            >
                                 履歴を消去する
                             </span>
                         ))}
@@ -79,7 +80,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                     <ul id="historyList">
                         {history.length > 0 ? (
                             [...history]
-                                .slice(-HISTORY_DISPLAY)
+                                .slice(-SETTINGS.HISTORY.DISPLAY)
                                 .reverse()
                                 .map((p) => (
                                     <li
@@ -92,7 +93,9 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                                     </li>
                                 ))
                         ) : (
-                            <p className="empty-history">まだ履歴がありません</p>
+                            <p className="empty-history">
+                                まだ履歴がありません
+                            </p>
                         )}
                     </ul>
                 </>

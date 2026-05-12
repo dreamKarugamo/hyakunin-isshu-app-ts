@@ -1,6 +1,5 @@
-import { useCallback, useRef } from "react";
-
-const AUDIO_SAFETY_TIMEOUT_MS = 5000;
+import { useRef, useCallback } from "react";
+import { SETTINGS } from "../constants";
 
 export function useAudio() {
     const audioRef = useRef<HTMLAudioElement>(new Audio());
@@ -15,7 +14,7 @@ export function useAudio() {
         (src: string): Promise<void> => {
             return new Promise((resolve) => {
                 const audio = audioRef.current;
-                
+
                 audio.pause();
                 audio.src = src;
                 audio.load();
@@ -24,12 +23,12 @@ export function useAudio() {
                 const safetyTimer = window.setTimeout(() => {
                     console.warn("Audio timeout:", src);
                     resolve();
-                }, AUDIO_SAFETY_TIMEOUT_MS);
+                }, SETTINGS.AUDIO.SAFETY_TIMEOUT_MS); // 3000
 
                 audio.onended = () => {
                     window.clearTimeout(safetyTimer);
                     resolve();
-                };
+                }
 
                 audio.onerror = (e) => {
                     console.error("Audio error:", e);
@@ -37,7 +36,6 @@ export function useAudio() {
                     resolve();
                 };
 
-                // 再生
                 audio.play().catch((err) => {
                     console.error("Play blocked:", err);
                     window.clearTimeout(safetyTimer);

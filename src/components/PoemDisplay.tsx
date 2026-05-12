@@ -4,7 +4,7 @@ import type { Poem, AppState } from "../types/types";
 interface PoemDisplayProps {
     state: AppState;
     countdown: number | null;
-    displayedPhrases: string[];
+    displayedPoem: string[];
     showAuthor: boolean;
     currentPoem: Poem | null;
 }
@@ -13,7 +13,7 @@ interface PoemDisplayProps {
 export const PoemDisplay: React.FC<PoemDisplayProps> = ({
     state,
     countdown,
-    displayedPhrases,
+    displayedPoem,
     showAuthor,
     currentPoem,
 }) => {
@@ -36,7 +36,7 @@ export const PoemDisplay: React.FC<PoemDisplayProps> = ({
     if (state === "playing") {
         return (
             <div className="poem-text-container">
-                {displayedPhrases.map((phrase, i) => (
+                {displayedPoem.map((phrase, i) => (
                     <div key={i} className="phrase-line">
                         {phrase}
                     </div>

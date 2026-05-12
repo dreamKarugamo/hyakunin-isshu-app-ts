@@ -8,4 +8,4 @@ export interface Poem {
   translation: string;
 }
 
-export type AppState = 'idle' | 'roulette' | 'countdown' | 'playing';
+export type AppState = 'idle' | 'spinning' | 'countdown' | 'playing';
