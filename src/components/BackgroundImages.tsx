@@ -61,23 +61,30 @@ export const BackgroundImages: React.FC<BackgroundImagesProps> = ({
     }, [bgUrl, isCountdown, showB]);
 
     useEffect(() => {
-        if (bgUrl !== prevUrlRef.current && !isCountdown) {
-            setLayerA(bgUrl);
-            setLayerB(bgUrl);
+        if (bgUrl === prevUrlRef.current) return;
+    
+        const img = new Image();
+        img.src = bgUrl;
+    
+        const performTransition = () => {
+            if (showB) {
+                setLayerA(bgUrl);
+                // Layer B (現在1) から Layer A (現在0) へフェード
+                setTimeout(() => setShowB(false), 50);
+            } else {
+                setLayerB(bgUrl);
+                // Layer A (現在1) から Layer B (現在0) へフェード
+                setTimeout(() => setShowB(true), 50);
+            }
             prevUrlRef.current = bgUrl;
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [bgUrl]);
+        };
+    
+        img.onload = performTransition;
+        if (img.complete) performTransition();
+    
+    }, [bgUrl, showB]);
 
     const FADE_DURATION = "1200ms";
-
-    // const baseStyle: React.CSSProperties = {
-    //     position: "fixed",
-    //     inset: 0,
-    //     backgroundSize: "cover",
-    //     backgroundPosition: "center",
-    //     transition: `opacity ${FADE_DURATION} ease-in-out`,
-    // };
 
     const baseStyle: React.CSSProperties = {
         position: "fixed",
