@@ -58,11 +58,18 @@ body {
 }
 
 main {
-    min-height: 65vh;
-    height: auto;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+}
+
+.main-container {
+    min-height: 60vh;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
     padding-bottom: 20px;
 }
 /*
@@ -422,15 +429,6 @@ h1 {
 ボタンセクション
 =================================================
 */
-.controls {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 90%;
-    max-width: 50vw;
-}
 
 button {
     font-size: 14px;
@@ -440,14 +438,15 @@ button {
     color: var(--color-white);
     border: none;
     border-radius: var(--radius-md);
-    width: 180px;
+    width: 300px;
     position: relative;
     overflow: hidden;
     box-shadow:
         2px 5px 0 var(--color-primary),
         6px 10px 15px rgba(0, 0, 0, 0.3);
-    transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background-size: 200% auto;
+    margin: 0 auto;
+    display: block;
 }
 
 button:hover:not(:disabled) {
@@ -472,9 +471,9 @@ button::after {
     transition: left 0.5s;
 }
 
-button:hover::after {
+/*button:hover::after {
     left: 100%;
-}
+}*/
 
 button:active:not(:disabled) {
     transform: translateY(2px);
@@ -485,11 +484,18 @@ button:active:not(:disabled) {
 
 #mainBtn {
     background-image: linear-gradient(135deg, #fd2828, #fc3dcc, #711cb7);
-    width: 25vw;
-    max-width: 300px;
+    width: 320px;
+    margin: 0 auto;
+    display: block;
     padding: 15px 20px;
     border-radius: 50px;
     font-size: 0.8rem;
+    box-sizing: border-box;
+    transition:
+        transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.2s ease,
+        filter 0.2s ease,
+        background 0.5s ease;
 }
 
 #mainBtn.btn-start {
@@ -506,9 +512,11 @@ button:active:not(:disabled) {
 */
 .clear-confirm {
     display: flex;
+    width: 80%;
+    margin: 0 auto;
     justify-content: center;
     text-align: center;
-    gap: 8px;
+    gap: 30px;
     flex-wrap: wrap;
     padding: 6px 0;
 }
@@ -516,6 +524,13 @@ button:active:not(:disabled) {
 .clear-confirm-msg {
     font-size: 13px;
     color: peachpuff;
+}
+
+.clear-confirm-button-group {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
 }
 
 .clear-confirm-yes {
@@ -537,11 +552,20 @@ button:active:not(:disabled) {
     box-shadow: none;
 }
 
+footer {
+    
+    display: flex;
+    
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
 #history {
+    margin: 20px auto 15px;
     background: rgb(0, 0, 0);
     backdrop-filter: blur(5px);
     border-radius: var(--radius-lg);
-    margin: 20px auto;
     width: fit-content;
     height: fit-content;
     min-width: 300px;
@@ -553,7 +577,8 @@ button:active:not(:disabled) {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* 中央に寄せる */
+    justify-content: center; 
     gap: 10px;
     padding: 10px 16px;
     background: transparent;
@@ -585,13 +610,15 @@ button:active:not(:disabled) {
 
 .history-toggle-label {
     font-size: 15px;
+    text-align: center;
     color: rgba(255, 255, 255, 0.85);
 }
 
 .history-toggle-arrow {
     font-size: 11px;
+    text-align: left;
     color: rgba(255, 255, 255, 0.4);
-    margin-left: auto;
+    margin-left: 0; 
 }
 
 .history-header {
@@ -667,11 +694,11 @@ button:active:not(:disabled) {
         1px 1px 0px #ffeb3b,
         3px 3px 0px var(--color-primary);
     text-align: center;
-    padding: 10px 0;
+    padding: 0;
 }
 
 .congrats-overlay {
-    position: fixed !important; 
+    position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
@@ -679,7 +706,7 @@ button:active:not(:disabled) {
     width: 100vw !important;
     height: 100vh !important;
     z-index: 999999 !important;
-    background-color: rgba(0, 0, 0, 0.4); 
+    background-color: rgba(0, 0, 0, 0.4);
     -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
     display: flex !important;
@@ -868,8 +895,7 @@ button:active:not(:disabled) {
     }
 
     #mainBtn {
-        width: 80%;
-        max-width: 280px;
+        width: 250px;
         font-size: 16px;
     }
 
@@ -885,7 +911,7 @@ button:active:not(:disabled) {
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: 999999; 
+        z-index: 999999;
         background-color: rgba(0, 0, 0, 0.5);
         -webkit-backdrop-filter: blur(12px) saturate(160%);
         backdrop-filter: blur(12px) saturate(160%);
@@ -895,7 +921,7 @@ button:active:not(:disabled) {
         margin: 0;
         padding: 0;
     }
-    
+
     .congrats-content {
         background: #1a1a1a;
         padding: 40px;

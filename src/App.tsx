@@ -126,68 +126,72 @@ const App: React.FC = () => {
             )}
 
             <main>
-                <div
-                    id="mobileImageArea"
-                    style={{ backgroundImage: `url("${bgUrl}")` }}
-                />
-                <div id="roulette">{rouletteNum}</div>
-                <div id="poem">
-                    <PoemDisplay
-                        state={state}
-                        countdown={countdown}
-                        displayedPoem={displayedPoem}
-                        showAuthor={showAuthor}
-                        currentPoem={currentPoem}
+                <div className="main-container">
+                    <div
+                        id="mobileImageArea"
+                        style={{ backgroundImage: `url("${bgUrl}")` }}
                     />
+                    <div id="roulette">{rouletteNum}</div>
+                    <div id="poem">
+                        <PoemDisplay
+                            state={state}
+                            countdown={countdown}
+                            displayedPoem={displayedPoem}
+                            showAuthor={showAuthor}
+                            currentPoem={currentPoem}
+                        />
+                    </div>
+                    <TranslationArea poem={currentPoem} visible={showAuthor} />
+
                 </div>
-                <TranslationArea poem={currentPoem} visible={showAuthor} />
+
+                <div className="controls">
+                    <button
+                        id="mainBtn"
+                        onClick={handleMainAction}
+                        disabled={state === "finished"}
+                        className={
+                            isAutoMode && state !== "idle" && state !== "finished"
+                                ? "btn-stop"
+                                : "btn-start"
+                        }
+                    >
+                        {isAutoMode && state !== "idle" && state !== "finished"
+                            ? "停止する"
+                            : "ルーレット開始！"}
+                        <br />
+                        <label onClick={(e) => e.stopPropagation()}>
+                            <input
+                                type="checkbox"
+                                checked={isAutoMode}
+                                disabled={state !== "idle"}
+                                onChange={(e) => {
+                                    e.stopPropagation();
+                                    const checked = e.target.checked;
+                                    setIsAutoMode(checked);
+                                    if (checked && state === "idle") {
+                                        startRoulette(undefined, true);
+                                    } else if (!checked && state !== "idle") {
+                                        stopAll();
+                                    }
+                                }}
+                            />
+                            自動モード
+                        </label>
+                    </button>
+                </div>
             </main>
 
-            <div className="controls">
-                <button
-                    id="mainBtn"
-                    onClick={handleMainAction}
-                    disabled={state === "finished"}
-                    className={
-                        isAutoMode && state !== "idle" && state !== "finished"
-                            ? "btn-stop"
-                            : "btn-start"
-                    }
-                >
-                    {isAutoMode && state !== "idle" && state !== "finished"
-                        ? "停止する"
-                        : "ルーレット開始！"}
-                    <br />
-                    <label onClick={(e) => e.stopPropagation()}>
-                        <input
-                            type="checkbox"
-                            checked={isAutoMode}
-                            disabled={state !== "idle"}
-                            onChange={(e) => {
-                                e.stopPropagation();
-                                const checked = e.target.checked;
-                                setIsAutoMode(checked);
-                                if (checked && state === "idle") {
-                                    startRoulette(undefined, true);
-                                } else if (!checked && state !== "idle") {
-                                    stopAll();
-                                }
-                            }}
-                        />
-                        自動モード
-                    </label>
-                </button>
-            </div>
-
-            <div className="narrator">音声：VOICEVOX: ずんだもん</div>
-
-            <HistorySection
-                history={history}
-                onSelect={handleSelectPoem}
-                onClear={clearHistory}
-            />
-            
             <div id="stars" />
+            
+            <footer>
+                <HistorySection
+                    history={history}
+                    onSelect={handleSelectPoem}
+                    onClear={clearHistory}
+                />
+                <div className="narrator">音声：VOICEVOX: ずんだもん</div>
+            </footer>
         </div>
     );
 };

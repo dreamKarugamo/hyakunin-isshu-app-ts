@@ -1,6 +1,6 @@
 export const SETTINGS = {
     ROULETTE: {
-        TICKS: 15,
+        TICKS: 20,
         INTERVAL_MS: 60,
     },
     COUNTDOWN: {

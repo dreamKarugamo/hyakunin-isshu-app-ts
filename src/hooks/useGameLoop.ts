@@ -147,7 +147,7 @@ export const useGameLoop = (
                 );
                 ticks++;
 
-                if (ticks <= SETTINGS.ROULETTE.TICKS) return; // 60
+                if (ticks <= SETTINGS.ROULETTE.TICKS) return; // 20
                 window.clearInterval(timerId);
                 if (stateRef.current !== "spinning") return;
 

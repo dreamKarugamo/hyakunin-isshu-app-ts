@@ -37,9 +37,8 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                 onClick={() => setIsOpen((v) => !v)}
             >
                 <span className="history-toggle-count">
-                    {history.length} / {SETTINGS.POEM.HYAKUNIN_ISSHU_LENGTH}
+                    進捗率： {history.length} / {SETTINGS.POEM.HYAKUNIN_ISSHU_LENGTH}
                 </span>
-                <span className="history-toggle-label">最近読んだ五首</span>
                 <span className="history-toggle-arrow">
                     {isOpen ? "▲" : "▼"}
                 </span>
@@ -47,35 +46,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
 
             {isOpen && (
                 <>
-                    {history.length > 0 &&
-                        (confirming ? (
-                            <div className="clear-confirm">
-                                <span className="clear-confirm-msg">
-                                    本当に削除しますか？
-                                </span>
-                                <button
-                                    type="button"
-                                    className="clear-confirm-yes"
-                                    onClick={handleConfirm}
-                                >
-                                    削除する
-                                </button>
-                                <button
-                                    type="button"
-                                    className="clear-confirm-no"
-                                    onClick={handleCancel}
-                                >
-                                    キャンセル
-                                </button>
-                            </div>
-                        ) : (
-                            <span
-                                onClick={handleClearClick}
-                                className="reset-char"
-                            >
-                                履歴を消去する
-                            </span>
-                        ))}
+                    <p className="history-toggle-label">最近読んだ五首</p>
 
                     <ul id="historyList">
                         {history.length > 0 ? (
@@ -98,6 +69,39 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                             </p>
                         )}
                     </ul>
+
+                    {history.length > 0 &&
+                        (confirming ? (
+                            <div className="clear-confirm">
+                                <span className="clear-confirm-msg">
+                                    本当に削除しますか？
+                            </span>
+
+                                <div className="clear-confirm-button-group">
+                                    <button
+                                        type="button"
+                                        className="clear-confirm-yes"
+                                        onClick={handleConfirm}
+                                    >
+                                        削除する
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="clear-confirm-no"
+                                        onClick={handleCancel}
+                                    >
+                                        キャンセル
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <span
+                                onClick={handleClearClick}
+                                className="reset-char"
+                            >
+                                履歴を消去する
+                            </span>
+                        ))}
                 </>
             )}
         </section>
