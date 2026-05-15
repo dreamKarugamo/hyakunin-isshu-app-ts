@@ -104,7 +104,7 @@ h1 {
 */
 
 button {
-    font-size: 14px;
+    font-size: 0.7rem;
     font-weight: bold;
     cursor: pointer;
     color: var(--color-white);
@@ -144,8 +144,9 @@ button {
     height: 100%;
     padding: 0 10px;
     border-radius: 20px 0 0 20px;
-    font-size: 14px;
+    font-size: 0.7rem;
     text-align: center;
+    border: none;
 }
 
 .search-btn {
@@ -157,6 +158,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
 }
 
 .search-btn:hover {
@@ -255,7 +257,7 @@ button {
 */
 #roulette {
     font-family: "Shippori Mincho", "MS PMincho", "serif";
-    font-size: 8vh;
+    font-size: 5vw;
     font-weight: 900;
     height: 1.2em;
     display: flex;
@@ -404,6 +406,7 @@ button {
         box-shadow 0.2s ease,
         filter 0.2s ease,
         background 0.5s ease;
+    border: none;
 }
 
 #mainBtn:hover:not(:disabled) {
@@ -810,7 +813,6 @@ footer {
 
     #mainBtn {
         width: 250px;
-        font-size: 16px;
         transition: none;
         transform: none;
     }
