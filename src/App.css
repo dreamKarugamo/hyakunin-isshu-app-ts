@@ -108,7 +108,6 @@ button {
     font-weight: bold;
     cursor: pointer;
     color: var(--color-white);
-    border: none;
     border-radius: 12px;
     width: 300px;
     position: relative;
@@ -708,6 +707,10 @@ footer {
         width: 200px;
     }
 
+    button {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
     .search-btn {
         width: 80px;
     }
