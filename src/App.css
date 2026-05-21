@@ -726,6 +726,7 @@ footer {
         background-position: center;
         border-radius: 15px;
         margin: 20px auto;
+        transition: opacity 2700ms ease-in-out;
     }
 
     #stars::after {
