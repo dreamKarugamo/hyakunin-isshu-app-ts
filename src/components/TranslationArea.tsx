@@ -1,5 +1,5 @@
-import React from 'react';
-import type { Poem } from '../types/types';
+import React from "react";
+import type { Poem } from "../types/types";
 
 interface TranslationAreaProps {
     poem: Poem | null;
@@ -14,14 +14,10 @@ export const TranslationArea: React.FC<TranslationAreaProps> = ({
 
     return (
         <div id="translationArea">
-            <div className="translation-area">
-                <p id="translationText">
-                    <strong>
-                        【現代語訳】
-                    </strong>
-                    {poem.translation}
-                </p>
-            </div>
+            <p id="translationText">
+                <strong>【現代語訳】</strong>
+                {poem.translation}
+            </p>
         </div>
     );
 };
