@@ -13,8 +13,8 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
     onSelect,
     onClear,
 }) => {
-    const [confirming, setConfirming] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+    const [confirming, setConfirming] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleClearClick = () => {
         setConfirming(true);
@@ -37,7 +37,8 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                 onClick={() => setIsOpen((v) => !v)}
             >
                 <span className="history-toggle-count">
-                    進捗率： {history.length} / {SETTINGS.POEM.HYAKUNIN_ISSHU_LENGTH}
+                    進捗率： {history.length} /{" "}
+                    {SETTINGS.POEM.HYAKUNIN_ISSHU_LENGTH}
                 </span>
                 <span className="history-toggle-arrow">
                     {isOpen ? "▲" : "▼"}
@@ -75,7 +76,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                             <div className="clear-confirm">
                                 <span className="clear-confirm-msg">
                                     本当に削除しますか？
-                            </span>
+                                </span>
 
                                 <div className="clear-confirm-button-group">
                                     <button

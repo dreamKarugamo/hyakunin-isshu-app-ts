@@ -1134,7 +1134,7 @@ export const hyakuninIsshuData: Poem[] = [
     },
     {
         id: 87,
-        text: "村雨の 露もまだひぬ 真木の葉に 霧立ちのぼる 秋の夕暮れ",
+        text: "村雨の 露もまだ干ぬ 真木の葉に 霧立ちのぼる 秋の夕暮れ",
         historicalKana:
             "むらさめの つゆもまだひぬ まきのはに きりたちのぼる あきのゆふぐれ",
         modernKana:
@@ -1173,7 +1173,7 @@ export const hyakuninIsshuData: Poem[] = [
     },
     {
         id: 90,
-        text: "見せばやな 雄島の海人の 袖だにも ぬれにぞぬれし 色はかはらず",
+        text: "見せばやな 雄島の海人の 袖だにも ぬれにぞぬれし 色は変はらず",
         historicalKana:
             "みせばやな をじまのあまの そでだにも ぬれにぞぬれし いろはかはらず",
         modernKana:
