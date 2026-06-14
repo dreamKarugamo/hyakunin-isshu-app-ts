@@ -17,7 +17,8 @@ export const SETTINGS = {
         AUTHOR_REVEAL: 4,
     },
     AUDIO: {
-        SAFETY_TIMEOUT_MS: 3000,
+        // 音声ファイルの実長に合わせて余裕を持たせる(旧: 3000)
+        SAFETY_TIMEOUT_MS: 8000,
     },
     HISTORY: {
         DISPLAY: 5,

@@ -1290,7 +1290,7 @@ export const hyakuninIsshuData: Poem[] = [
     },
     {
         id: 99,
-        text: "人も愛し 人も恨めし あぢきなく 世を思ふゆゑに 物思ふ身は",
+        text: "人も愛し 人も恨めし あぢきなく 世を思ふゆゑに もの思ふ身は",
         historicalKana:
             "ひともをし ひともうらめし あぢきなく よをおもふゆゑに ものおもふみは",
         modernKana:

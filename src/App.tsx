@@ -133,7 +133,9 @@ const App: React.FC = () => {
                         id="mobileImageArea"
                         style={{ backgroundImage: `url("${bgUrl}")` }}
                     />
-                    <div id="roulette">{rouletteNum}</div>
+                    <div id="roulette" style={state === "playing" ? { visibility: "hidden" } : undefined}>
+                        {rouletteNum ?? "？"}
+                    </div>
                     <div id="poem">
                         <PoemDisplay
                             state={state}

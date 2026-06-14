@@ -14,75 +14,37 @@ export const BackgroundImages: React.FC<BackgroundImagesProps> = ({
     const [showB, setShowB] = useState(false);
 
     const prevUrlRef = useRef(bgUrl);
-    const prevCountdownRef = useRef(isCountdown);
 
-    useEffect(() => {
-        const urlChanged = bgUrl !== prevUrlRef.current;
-        const countdownStarted = isCountdown && !prevCountdownRef.current;
-
-        // カウントダウンがはじまりURLが変わったら、次の画像をプリロード
-        if (countdownStarted && urlChanged) {
-            const img = new Image();
-            img.src = bgUrl;
-
-            const startFade = () => {
-                if (showB) {
-                    // LayerAを表示
-                    setLayerA(bgUrl);
-
-                    setTimeout(() => {
-                        requestAnimationFrame(() => {
-                            setShowB(false);
-                        });
-                    }, 100);
-                } else {
-                    // LayerBを表示
-                    setLayerB(bgUrl);
-                    
-                    setTimeout(() => {
-                        requestAnimationFrame(() => {
-                            setShowB(true);
-                        });
-                    }, 100);
-                }
-                prevUrlRef.current = bgUrl;
-            };
-
-            if (img.complete) {
-                // すでにキャッシュ済み
-                startFade();
-            } else {
-                // 読み込み完了を待ってからフェード
-                img.onload = startFade;
-            }
-        }
-
-        prevCountdownRef.current = isCountdown;
-    }, [bgUrl, isCountdown, showB]);
-
+    // bgUrl が変化したときにのみフェード処理を行う（単一のuseEffectに統合）
     useEffect(() => {
         if (bgUrl === prevUrlRef.current) return;
-    
+
         const img = new Image();
         img.src = bgUrl;
-    
+
         const performTransition = () => {
             if (showB) {
+                // Layer B (現在表示中) から Layer A へフェード
                 setLayerA(bgUrl);
-                // Layer B (現在1) から Layer A (現在0) へフェード
-                setTimeout(() => setShowB(false), 50);
+                setTimeout(() => {
+                    requestAnimationFrame(() => setShowB(false));
+                }, 50);
             } else {
+                // Layer A (現在表示中) から Layer B へフェード
                 setLayerB(bgUrl);
-                // Layer A (現在1) から Layer B (現在0) へフェード
-                setTimeout(() => setShowB(true), 50);
+                setTimeout(() => {
+                    requestAnimationFrame(() => setShowB(true));
+                }, 50);
             }
             prevUrlRef.current = bgUrl;
         };
-    
-        img.onload = performTransition;
-        if (img.complete) performTransition();
-    
-    }, [bgUrl, showB]);
+
+        if (img.complete) {
+            performTransition();
+        } else {
+            img.onload = performTransition;
+        }
+    }, [bgUrl, showB, isCountdown]);
 
     const FADE_DURATION = "1200ms";
 

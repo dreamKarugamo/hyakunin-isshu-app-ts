@@ -15,12 +15,11 @@ export const useGameLoop = (
     // =======================================
     // 状態管理
     // =======================================
-
-    // useState-------------------
     const [state, setState] = useState<AppState>("idle");
     const [currentPoem, setCurrentPoem] = useState<Poem | null>(null);
     const [displayedPoem, setDisplayedPoem] = useState<string[]>([]);
-    const [rouletteNum, setRouletteNum] = useState<string>("？");
+    // ルーレット表示中の数値。表示時に文字列化することで毎tickのString生成を避ける
+    const [rouletteNum, setRouletteNum] = useState<number | null>(null);
     const [showAuthor, setShowAuthor] = useState<boolean>(false);
     const [countdown, setCountdown] = useState<number | null>(null);
 
@@ -31,7 +30,6 @@ export const useGameLoop = (
                 .filter((id) => !historyIds.has(id));
         }, [history]);
 
-    // Refs-------------------
     // 非同期クロージャー内での最新参照用
     const stateRef = useRef<AppState>(state);
     useEffect(() => {
@@ -62,7 +60,7 @@ export const useGameLoop = (
             setState("playing");
             setCurrentPoem(poem);
             addToHistory(poem);
-            setRouletteNum("");
+            setRouletteNum(null);
             setDisplayedPoem([]);
             setShowAuthor(false);
 
@@ -71,7 +69,7 @@ export const useGameLoop = (
             for (let i = 0; i < phrases.length; i++) {
                 if (stateRef.current === "idle") return false;
 
-                // 四首目と同時に作者名表示
+                // 五句目と同時に作者名表示
                 if (i === SETTINGS.INDICES.AUTHOR_REVEAL) setShowAuthor(true);
 
                 setDisplayedPoem((prev) => [...prev, phrases[i]]);
@@ -131,7 +129,7 @@ export const useGameLoop = (
                 setState("finished");
                 return;
             }
-            
+
             stopAll();
             setState("spinning");
             setDisplayedPoem([]);
@@ -140,10 +138,7 @@ export const useGameLoop = (
             let ticks = 0;
             const timerId = window.setInterval(async () => {
                 setRouletteNum(
-                    String(
-                        Math.floor(Math.random() * hyakuninIsshuData.length) +
-                            1,
-                    ),
+                    Math.floor(Math.random() * hyakuninIsshuData.length) + 1,
                 );
                 ticks++;
 
@@ -166,7 +161,7 @@ export const useGameLoop = (
                         )!;
                     })();
 
-                setRouletteNum(String(chosen.id));
+                setRouletteNum(chosen.id);
 
                 setState("countdown");
                 for (let c = SETTINGS.COUNTDOWN.START; c > 0; c--) {
