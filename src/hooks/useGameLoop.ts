@@ -1,4 +1,3 @@
-// インポート
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Poem, AppState } from "../types/types";
 import { hyakuninIsshuData } from "../data/poemData";

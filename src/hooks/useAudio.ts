@@ -1,12 +1,28 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { SETTINGS } from "../constants";
 
 export function useAudio() {
-    // 遅延初期化（Strict Mode の二重実行で複数生成されるのを防ぐ）
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const safetyTimerRef = useRef<number | null>(null); // 追加
+
     if (audioRef.current === null) {
         audioRef.current = new Audio();
     }
+
+    // アンマウント時にaudioとsafetyTimer を cleanup
+    useEffect(() => {
+        return () => {
+            if (safetyTimerRef.current !== null) {
+                window.clearTimeout(safetyTimerRef.current);
+            }
+            const audio = audioRef.current;
+            if (audio) {
+                audio.pause();
+                audio.onended = null;
+                audio.onerror = null;
+            }
+        };
+    }, []);
 
     const stop = useCallback(() => {
         const audio = audioRef.current;
@@ -23,30 +39,46 @@ export function useAudio() {
                 return;
             }
 
+            // 前回の safetyTimer が残っていればキャンセル
+            if (safetyTimerRef.current !== null) {
+                window.clearTimeout(safetyTimerRef.current);
+                safetyTimerRef.current = null;
+            }
+
             audio.pause();
             audio.src = src;
             audio.load();
             audio.playbackRate = 0.9;
 
-            const safetyTimer = window.setTimeout(() => {
-                console.warn("Audio timeout:", src);
+            safetyTimerRef.current = window.setTimeout(() => {
+                console.warn("Audio Timeout:", src);
+                safetyTimerRef.current = null;
                 resolve();
-            }, SETTINGS.AUDIO.SAFETY_TIMEOUT_MS); // 8000
+            }, SETTINGS.AUDIO.SAFETY_TIMEOUT_MS);
 
             audio.onended = () => {
-                window.clearTimeout(safetyTimer);
+                if (safetyTimerRef.current !== null) {
+                    window.clearTimeout(safetyTimerRef.current);
+                    safetyTimerRef.current = null;
+                }
                 resolve();
             };
 
-            audio.onerror = (e) => {
-                console.error("Audio error:", e);
-                window.clearTimeout(safetyTimer);
+            audio.onerror = (err) => {
+                console.error("Audio Error:", err);
+                if (safetyTimerRef.current !== null) {
+                    window.clearTimeout(safetyTimerRef.current);
+                    safetyTimerRef.current = null;
+                }
                 resolve();
             };
 
             audio.play().catch((err) => {
-                console.error("Play blocked:", err);
-                window.clearTimeout(safetyTimer);
+                console.error("Play Blocked:", err);
+                if (safetyTimerRef.current !== null) {
+                    window.clearTimeout(safetyTimerRef.current);
+                    safetyTimerRef.current = null;
+                }
                 resolve();
             });
         });

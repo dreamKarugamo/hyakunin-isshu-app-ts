@@ -17,13 +17,12 @@ export const SETTINGS = {
         AUTHOR_REVEAL: 4,
     },
     AUDIO: {
-        // 音声ファイルの実長に合わせて余裕を持たせる(旧: 3000)
         SAFETY_TIMEOUT_MS: 8000,
     },
     HISTORY: {
         DISPLAY: 5,
         MAX: 101,
-        KEY: "isshuHistory",
+        KEY: "hyakunin-isshu:history", 
     },
     POEM: {
         HYAKUNIN_ISSHU_LENGTH: 101,

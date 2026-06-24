@@ -191,7 +191,8 @@ const App: React.FC = () => {
                     onSelect={handleSelectPoem}
                     onClear={clearHistory}
                 />
-                <div className="narrator">音声：VOICEVOX: ずんだもん</div>
+                <div className="narrator">音声：VOI
+                    CEVOX: ずんだもん</div>
             </footer>
         </>
     );
